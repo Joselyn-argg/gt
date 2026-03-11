@@ -10,10 +10,10 @@ const Button = ({
   const baseClasses = 'px-4 py-2 rounded-lg font-semibold transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variants = {
-    primary: 'bg-primary text-light hover:bg-opacity-90', // Fondo oscuro, texto blanco
-    secondary: 'bg-secondary text-dark hover:bg-gray-300', // Fondo gris claro, texto oscuro
-    accent: 'bg-accent text-secondary hover:bg-opacity-90', // Fondo calipso, texto oscuro
-    warning: 'bg-warning text-dark hover:bg-opacity-90', // Fondo mostaza, texto oscuro
+    primary: 'bg-primary text-light hover:bg-opacity-90', 
+    secondary: 'bg-secondary text-dark hover:bg-opacity-90', 
+    accent: 'bg-dark text-light hover:bg-opacity-90', 
+    warning: 'bg-warning text-dark hover:bg-opacity-90', 
   };
 
   // Combinacion las clases base, la variante seleccionada y las clases extra que nos pasen

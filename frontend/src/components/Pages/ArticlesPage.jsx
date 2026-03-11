@@ -81,8 +81,8 @@ const ArticlesPage = () => {
       <Breadcrumbs />
       
       {/* Header con gradiente */}
-      <div className="bg-primary rounded-lg p-8 mb-8 text-white">
-        <h1 className="text-4xl font-bold mb-2">Blog y Artículos</h1>
+      <div className="bg-accent rounded-lg p-8 mb-8 text-white">
+        <h1 className="text-4xl font-bold mb-2">Información</h1>
         <p className="text-xl opacity-90">Consejos, guías y novedades del mundo del patinaje</p>
       </div>
 

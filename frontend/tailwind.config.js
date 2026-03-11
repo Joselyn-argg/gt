@@ -7,12 +7,12 @@ export default {
   theme: {
     extend: {
        colors: {
-        'primary': '#C5E0D9',        // Verde menta suave
-        'secondary': '#D9E5E0',       // Verde agua pálido
-        'accent': '#9F9AC7',          // Lila más intenso
-        'accent2': '#E0E8E5',         // Gris verdoso
-        'accent3': '#B8A2E6',         // Lavanda medio
-        'dark': '#3A5E55',           // Verde oscuro
+        'primary': '#c9c9f7',        // Lavanda muy suave
+        'secondary': '#D8D0F0',       // Lavanda pálido
+        'accent': '#9B8BC2',          // Lavanda medio
+        'accent2': '#C2B3E6',         // Lavanda claro
+        'accent3': '#B0A1D9',         // Lavanda medio suave
+        'dark': '#5E4B7A',           // Púrpura oscuro
         'light': '#FFFFFF',          // Blanco puro
         },
       fontFamily: {

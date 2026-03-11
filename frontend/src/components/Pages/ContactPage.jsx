@@ -3,7 +3,7 @@ import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import Input from '../Atomic/Atoms/Input';
 import { toast } from 'react-hot-toast';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa';
+import { FaInstagram, FaWhatsapp, FaClock } from 'react-icons/fa';
 
 const ContactPage = () => {
   // Estado del formulario
@@ -42,8 +42,6 @@ const ContactPage = () => {
   return (
     <div>
       <Breadcrumbs />
-
-      {/* Header divertido */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-dark mb-4">
           ¡Hablemos! <span className="text-primary">⚡</span>
@@ -54,58 +52,43 @@ const ContactPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Información de contacto - Columnas 1 */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Tarjeta de ubicación */}
-          <div className="bg-gradient-to-br from-primary to-accent3 p-6 rounded-lg text-white">
-            <h2 className="text-2xl font-bold mb-4">📍 Visítanos</h2>
-            <p className="mb-2">Av. Patinaje 1234</p>
-            <p>Santiago, Chile</p>
-          </div>
-
-          {/* Tarjetas de contacto */}
+        {/* Información de contacto - Columna 1 */}
+        <div className="lg:col-span-1">
           <div className="bg-accent2 bg-opacity-20 p-6 rounded-lg">
             <div className="flex items-center gap-3 mb-4">
-              <FaPhone className="text-primary text-xl" />
+              <FaInstagram className="text-dark text-xl" />
               <div>
-                <p className="font-semibold">Teléfono</p>
-                <p>+56 9 1234 5678</p>
+                <p className="font-semibold">Instagram</p>
+                <a 
+                  href="https://instagram.com/escuelagatonegro" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent3 transition-colors"
+                >
+                  @escuelagatonegro
+                </a>
               </div>
             </div>
             
             <div className="flex items-center gap-3 mb-4">
-              <FaEnvelope className="text-primary text-xl" />
+              <FaWhatsapp className="text-dark text-xl" />
               <div>
-                <p className="font-semibold">Email</p>
-                <p>hola@escuelapatina.cl</p>
+                <p className="font-semibold">Whatsapp</p>
+                <a 
+                  href="https://wa.me/56947614738" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent3 transition-colors"
+                >
+                  +56 9 4761 4738
+                </a>
               </div>
             </div>
             
             <div className="flex items-center gap-3">
-              <FaClock className="text-primary text-xl" />
+              <FaClock className="text-dark text-xl" />
               <div>
-                <p className="font-semibold">Horario</p>
-                <p>Lun - Vie: 9:00 - 20:00</p>
-                <p>Sáb: 10:00 - 18:00</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Redes sociales divertidas */}
-          <div className="bg-accent p-6 rounded-lg text-dark">
-            <h3 className="text-xl font-bold mb-3">¡Síguenos!</h3>
-            <div className="flex gap-4">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xl">📷</span>
-              </div>
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xl">📘</span>
-              </div>
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xl">🐦</span>
-              </div>
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors cursor-pointer">
-                <span className="text-xl">🎥</span>
+                <p className="font-semibold">Horarios a coordinar</p>
               </div>
             </div>
           </div>
@@ -182,7 +165,7 @@ const ContactPage = () => {
             <div className="flex justify-end">
               <Button 
                 type="submit" 
-                variant="primary"
+                variant="accent"
                 disabled={isSubmitting}
                 className="px-8"
               >

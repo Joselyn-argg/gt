@@ -19,11 +19,11 @@ const Header = () => {
         <nav className="flex gap-4 items-center">
           <NavLink to="/">Inicio</NavLink>
           <NavLink to="/clases">Clases</NavLink>
-          <NavLink to="/articulos">Artículos</NavLink>
+          <NavLink to="/articulos">Información</NavLink>
           <NavLink to="/contacto">Contacto</NavLink>
           
           {/* Perfil de usuario */}
-          <Link to="/login" className="text-2xl hover:text-accent">
+          <Link to="/login" className="text-2xl hover:text-accent3 transition-colors">
             <FaUserCircle />
           </Link>
           {/* Carrito */}
