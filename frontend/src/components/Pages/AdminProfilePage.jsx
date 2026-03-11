@@ -49,8 +49,8 @@ const AdminProfilePage = () => {
               <Link to="/admin/clases" className="block p-2 hover:bg-secondary hover:bg-opacity-50 rounded font-medium">
                 Lista de Clases
               </Link>
-              <Link to="/admin/articulos" className="block p-2 hover:bg-secondary hover:bg-opacity-50 rounded font-medium">
-                Lista de Artículos
+              <Link to="/admin/informacion" className="block p-2 hover:bg-secondary hover:bg-opacity-50 rounded font-medium">
+                Lista de Información
               </Link>
             </nav>
 

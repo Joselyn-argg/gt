@@ -49,7 +49,7 @@ const UserProfilePage = () => {
                 Mi Perfil
               </Link>
               <Link to="/perfil/guardados" className="block p-2 hover:bg-secondary hover:bg-opacity-50 rounded font-medium">
-                Artículos Guardados
+                Información guardada
               </Link>
             </nav>
 

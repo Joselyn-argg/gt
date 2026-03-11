@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import NavLink from '../Molecules/NavLink';
-import { FaShoppingCart, FaSkating, FaUserCircle } from 'react-icons/fa';
+import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { useCart } from '../../../context/CartContext';
 import logo from '../../../assets/icon-gt-wb.png';
 
@@ -19,7 +19,7 @@ const Header = () => {
         <nav className="flex gap-4 items-center">
           <NavLink to="/">Inicio</NavLink>
           <NavLink to="/clases">Clases</NavLink>
-          <NavLink to="/articulos">Información</NavLink>
+          <NavLink to="/informacion">Información</NavLink>
           <NavLink to="/contacto">Contacto</NavLink>
           
           {/* Perfil de usuario */}

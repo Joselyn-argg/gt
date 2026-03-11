@@ -4,7 +4,7 @@ import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import { FaUserCircle, FaSignOutAlt, FaBookmark, FaTrash, FaEye } from 'react-icons/fa';
 
-const SavedArticlesPage = () => {
+const SavedInfoPage = () => {
   const navigate = useNavigate();
   
   // Datos simulados de artículos guardados
@@ -34,7 +34,7 @@ const SavedArticlesPage = () => {
   };
 
   const handleViewArticle = (articleId) => {
-    navigate(`/articulos/${articleId}`);
+    navigate(`/informacion/${articleId}`);
   };
 
   const handleLogout = () => {
@@ -62,7 +62,7 @@ const SavedArticlesPage = () => {
                 Mi Perfil
               </Link>
               <Link to="/perfil/guardados" className="block p-2 bg-primary text-white rounded font-medium">
-                Artículos Guardados
+                Información guardada
               </Link>
             </nav>
 
@@ -79,7 +79,7 @@ const SavedArticlesPage = () => {
           <div className="bg-light rounded-lg shadow-lg p-6">
             <div className="flex items-center gap-2 mb-4">
               <FaBookmark className="text-primary" />
-              <h2 className="text-xl font-bold text-dark">Artículos Guardados</h2>
+              <h2 className="text-xl font-bold text-dark">Informacion guardad</h2>
             </div>
 
             {savedArticles.length === 0 ? (
@@ -122,4 +122,4 @@ const SavedArticlesPage = () => {
   );
 };
 
-export default SavedArticlesPage;
+export default SavedInfoPage;

@@ -4,7 +4,7 @@ import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import { FaBookmark, FaRegBookmark, FaClock } from 'react-icons/fa';
 
-const ArticlesPage = () => {
+const InfoPage = () => {
   // Estado para los artículos (simulado)
   const [articles] = useState([
     {
@@ -94,8 +94,8 @@ const ArticlesPage = () => {
             onClick={() => setSelectedCategory(category)}
             className={`px-4 py-2 rounded-full font-medium transition-all ${
               selectedCategory === category
-                ? 'bg-primary text-white shadow-md'
-                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                ? 'bg-primary text-white shadow-md hover:bg-accent3'
+                : 'bg-secondary text-dark hover:bg-accent2 hover:text-white'
             }`}
           >
             {category}
@@ -117,12 +117,12 @@ const ArticlesPage = () => {
               <div className="absolute top-2 right-2">
                 <button
                   onClick={() => toggleSaveArticle(article.id)}
-                  className="p-2 bg-white rounded-full shadow-md hover:bg-dark transition-colors"
+                  className="p-2 bg-white rounded-full shadow-md hover:bg-accent2 transition-colors"
                 >
                   {savedArticles.includes(article.id) ? (
                     <FaBookmark className="text-accent text-xl" />
                   ) : (
-                    <FaRegBookmark className="text-gray-700 text-xl" />
+                    <FaRegBookmark className="text-gray-700 text-xl hover:text-accent3" />
                   )}
                 </button>
               </div>
@@ -131,7 +131,7 @@ const ArticlesPage = () => {
             {/* Contenido */}
             <div className="p-6">
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2 py-1 bg-accent2 text-xs font-semibold rounded-full">
+                <span className="px-2 py-1 bg-accent2 text-dark text-xs font-semibold rounded-full">
                   {article.categoria}
                 </span>
                 <span className="flex items-center gap-1 text-gray-500 text-xs">
@@ -139,19 +139,20 @@ const ArticlesPage = () => {
                 </span>
               </div>
 
-              <h2 className="text-xl font-bold text-dark mb-1">{article.titulo}</h2>
+              <h2 className="text-xl font-bold text-dark mb-1 hover:text-accent transition-colors">{article.titulo}</h2>
               <h3 className="text-md text-gray-600 mb-3">{article.subtitulo}</h3>
               
               <p className="text-gray-700 mb-4 line-clamp-2">{article.descripcion}</p>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-accent">{article.autor}</p>
+                  <p className="text-sm font-medium text-accent hover:text-accent3 transition-colors">{article.autor}</p>
                   <p className="text-xs text-gray-500">{article.fecha_publicacion}</p>
                 </div>
                 
-                <Link to={`/articulos/${article.id}`}>
-                  <Button variant="accent" className="text-sm">
+                {/* ✅ CORREGIDO: Link a /informacion en lugar de /articulos */}
+                <Link to={`/informacion/${article.id}`}>
+                  <Button variant="accent" className="text-sm hover:bg-accent3">
                     Leer más →
                   </Button>
                 </Link>
@@ -171,4 +172,4 @@ const ArticlesPage = () => {
   );
 };
 
-export default ArticlesPage;
+export default InfoPage;

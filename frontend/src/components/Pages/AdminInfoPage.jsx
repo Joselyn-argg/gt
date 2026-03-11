@@ -5,7 +5,7 @@ import Button from '../Atomic/Atoms/Button';
 import AdminLayout from '../Layouts/AdminLayout';
 import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
 
-const AdminArticlesPage = () => {
+const AdminInfoPage = () => {
   const navigate = useNavigate();
   
   // Datos simulados de artículos
@@ -33,12 +33,14 @@ const AdminArticlesPage = () => {
     }
   ]);
 
+  // ✅ CORREGIDO: navegación a /informacion
   const handleView = (id) => {
-    navigate(`/articulos/${id}`);
+    navigate(`/informacion/${id}`);
   };
 
+  // ✅ CORREGIDO: navegación a /admin/informacion
   const handleEdit = (id) => {
-    navigate(`/admin/articulos/detail/${id}`);
+    navigate(`/admin/informacion/detail/${id}`);
   };
 
   const handleDelete = (id) => {
@@ -47,8 +49,9 @@ const AdminArticlesPage = () => {
     }
   };
 
+  // ✅ CORREGIDO: navegación a /admin/informacion/detail
   const handleAddNew = () => {
-    navigate('/admin/articulos/detail');
+    navigate('/admin/informacion/detail');
   };
 
   return (
@@ -57,7 +60,7 @@ const AdminArticlesPage = () => {
       
       <AdminLayout activeTab="articulos">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-dark">Administrar Artículos</h1>
+          <h1 className="text-3xl font-bold text-dark">Administrar Información</h1>
           <Button onClick={handleAddNew} variant="primary" className="flex items-center gap-2">
             <FaPlus /> Añadir Artículo
           </Button>
@@ -109,4 +112,4 @@ const AdminArticlesPage = () => {
   );
 };
 
-export default AdminArticlesPage;
+export default AdminInfoPage;

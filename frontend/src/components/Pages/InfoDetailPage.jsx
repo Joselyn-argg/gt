@@ -5,16 +5,15 @@ import Button from '../Atomic/Atoms/Button';
 import BackButton from '../Atomic/Atoms/BackButton';
 import { FaBookmark, FaRegBookmark, FaClock, FaUser, FaCalendar } from 'react-icons/fa';
 
-const ArticleDetailPage = () => {
-  const { id } = useParams(); // Obtiene el ID de la URL
+const InfoDetailPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
 
-  // Simular carga de datos (esto luego será con axios)
+  // Simular carga de datos
   useEffect(() => {
-    // Datos de ejemplo (igual que en ArticlesPage)
     const articlesData = [
       { 
         id: 1, 
@@ -115,16 +114,14 @@ const ArticleDetailPage = () => {
       if (foundArticle) {
         setArticle(foundArticle);
       } else {
-        // Si no existe, redirigir a 404
         navigate('/404');
       }
       setLoading(false);
-    }, 500); // Simular carga
+    }, 500);
   }, [id, navigate]);
 
   const toggleSave = () => {
     setIsSaved(!isSaved);
-    // Aquí iría la lógica para guardar en el perfil del usuario
   };
 
   if (loading) {
@@ -193,10 +190,9 @@ const ArticleDetailPage = () => {
           className="prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: article.contenido }}
         />
-
       </article>
     </div>
   );
 };
 
-export default ArticleDetailPage;
+export default InfoDetailPage;
