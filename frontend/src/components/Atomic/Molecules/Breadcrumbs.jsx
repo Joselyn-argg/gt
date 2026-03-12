@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
     <nav className="text-sm mb-4" aria-label="Breadcrumb">
       <ol className="list-none p-0 inline-flex items-center">
         <li className="flex items-center">
-          <Link to="/" className="text-gray-800 hover:text-primary font-medium">
+          <Link to="/" className="text-gray-800 hover:text-dark font-medium">
             <FaHome className="inline mr-1" /> Inicio
           </Link>
         </li>

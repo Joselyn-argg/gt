@@ -3,7 +3,7 @@ import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import Input from '../Atomic/Atoms/Input';
 import { toast } from 'react-hot-toast';
-import { FaInstagram, FaWhatsapp, FaClock } from 'react-icons/fa';
+import { FaInstagram, FaWhatsapp, FaClock, FaBolt } from 'react-icons/fa';
 
 const ContactPage = () => {
   // Estado del formulario
@@ -44,7 +44,7 @@ const ContactPage = () => {
       <Breadcrumbs />
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-dark mb-4">
-          ¡Hablemos! <span className="text-primary">⚡</span>
+          ¡Hablemos!
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           ¿Tienes dudas? ¿Quieres agendar una clase? ¡Escríbenos!
