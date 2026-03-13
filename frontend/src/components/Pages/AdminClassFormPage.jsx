@@ -7,13 +7,14 @@ import BackButton from '../Atomic/Atoms/BackButton';
 import AdminLayout from '../Layouts/AdminLayout';
 import { toast } from 'react-hot-toast';
 import { FaEye } from 'react-icons/fa';
+import api from '../../services/api';
 
 const AdminClassFormPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = !!id;
+  const [loading, setLoading] = useState(isEditing);
 
-  // Estado del formulario
   const [formData, setFormData] = useState({
     nombre: '',
     categorias: [],
@@ -22,31 +23,30 @@ const AdminClassFormPage = () => {
     precio: '',
     cupos: '',
     descripcion: '',
-    url_imagen: ''
+    imagen: ''
   });
 
-  // Opciones para selects
   const niveles = ['iniciante', 'intermedio', 'avanzado'];
   const categoriasOptions = ['slalom', 'artístico', 'velocidad', 'principiantes', 'técnicas'];
 
   // Cargar datos si es edición
   useEffect(() => {
     if (isEditing) {
-      // Simular carga de datos
-      const mockData = {
-        id: 1,
-        nombre: "Iniciación al Slalom",
-        categorias: ['slalom', 'principiantes'],
-        nivel: 'iniciante',
-        duracion: '1.5',
-        precio: '15000',
-        cupos: '8',
-        descripcion: 'Aprende las bases del slalom...',
-        url_imagen: 'https://images.unsplash.com/photo-1520031441872-265e4ff70366?w=400'
+      const fetchClass = async () => {
+        try {
+          const response = await api.get(`/clases/${id}`);
+          setFormData(response.data);
+        } catch (error) {
+          console.error('Error al cargar clase:', error);
+          toast.error('Error al cargar la clase');
+          navigate('/admin/clases');
+        } finally {
+          setLoading(false);
+        }
       };
-      setFormData(mockData);
+      fetchClass();
     }
-  }, [isEditing, id]);
+  }, [isEditing, id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +62,7 @@ const AdminClassFormPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validaciones
@@ -75,13 +75,38 @@ const AdminClassFormPage = () => {
       return;
     }
 
-    toast.success(`Clase ${isEditing ? 'actualizada' : 'creada'} exitosamente`);
-    navigate('/admin/clases');
+    try {
+      if (isEditing) {
+        await api.put(`/clases/${id}`, formData);
+        toast.success('Clase actualizada exitosamente');
+      } else {
+        await api.post('/clases', formData);
+        toast.success('Clase creada exitosamente');
+      }
+      navigate('/admin/clases');
+    } catch (error) {
+      console.error('Error al guardar:', error);
+      toast.error('Error al guardar la clase');
+    }
   };
 
   const handlePreview = () => {
     toast.success('Vista previa generada');
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Breadcrumbs />
+        <BackButton className="mb-4" />
+        <AdminLayout activeTab="clases">
+          <div className="flex justify-center items-center h-64">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </AdminLayout>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -98,7 +123,6 @@ const AdminClassFormPage = () => {
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="bg-light rounded-lg shadow-lg p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Nombre */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-dark mb-2">Nombre</label>
                   <Input
@@ -109,7 +133,6 @@ const AdminClassFormPage = () => {
                   />
                 </div>
 
-                {/* Categorías */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-dark mb-2">Categorías</label>
                   <div className="flex flex-wrap gap-2">
@@ -117,7 +140,7 @@ const AdminClassFormPage = () => {
                       <label key={cat} className="flex items-center gap-1">
                         <input
                           type="checkbox"
-                          checked={formData.categorias.includes(cat)}
+                          checked={formData.categorias?.includes(cat)}
                           onChange={() => handleCategoriaChange(cat)}
                           className="mr-1"
                         />
@@ -127,7 +150,6 @@ const AdminClassFormPage = () => {
                   </div>
                 </div>
 
-                {/* Nivel */}
                 <div>
                   <label className="block text-sm font-medium text-dark mb-2">Nivel</label>
                   <select
@@ -142,7 +164,6 @@ const AdminClassFormPage = () => {
                   </select>
                 </div>
 
-                {/* Duración */}
                 <div>
                   <label className="block text-sm font-medium text-dark mb-2">Duración (horas)</label>
                   <Input
@@ -156,7 +177,6 @@ const AdminClassFormPage = () => {
                   />
                 </div>
 
-                {/* Precio */}
                 <div>
                   <label className="block text-sm font-medium text-dark mb-2">Precio</label>
                   <Input
@@ -169,7 +189,6 @@ const AdminClassFormPage = () => {
                   />
                 </div>
 
-                {/* Cupos */}
                 <div>
                   <label className="block text-sm font-medium text-dark mb-2">Cupos</label>
                   <Input
@@ -182,18 +201,16 @@ const AdminClassFormPage = () => {
                   />
                 </div>
 
-                {/* URL Imagen */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-dark mb-2">URL Imagen</label>
                   <Input
-                    name="url_imagen"
-                    value={formData.url_imagen}
+                    name="imagen"
+                    value={formData.imagen}
                     onChange={handleChange}
                     placeholder="https://ejemplo.com/imagen.jpg"
                   />
                 </div>
 
-                {/* Descripción */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-dark mb-2">Descripción</label>
                   <textarea
@@ -215,11 +232,12 @@ const AdminClassFormPage = () => {
               <h2 className="text-xl font-bold text-dark mb-4">Vista previa</h2>
               
               <div className="border rounded-lg p-4 mb-4">
-                {formData.url_imagen && (
+                {formData.imagen && (
                   <img 
-                    src={formData.url_imagen} 
+                    src={formData.imagen} 
                     alt="Preview"
                     className="w-full h-32 object-cover rounded mb-2"
+                    onError={(e) => e.target.src = 'https://via.placeholder.com/400x200?text=Sin+imagen'}
                   />
                 )}
                 <h3 className="font-semibold text-dark">{formData.nombre || 'Nombre de clase'}</h3>

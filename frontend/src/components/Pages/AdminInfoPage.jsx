@@ -1,58 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import AdminLayout from '../Layouts/AdminLayout';
 import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
+import api from '../../services/api';
+import { toast } from 'react-hot-toast';
 
 const AdminInfoPage = () => {
   const navigate = useNavigate();
-  
-  // Datos simulados de artículos
-  const [articulos, setArticulos] = useState([
-    { 
-      id: 1, 
-      titulo: "Cómo elegir tus primeros patines",
-      autor: "Profesora Campeona",
-      fecha_publicacion: "2024-02-10",
-      categoria: "Principiantes"
-    },
-    { 
-      id: 2, 
-      titulo: "Beneficios del patinaje en niños",
-      autor: "Profesora Campeona",
-      fecha_publicacion: "2024-02-05",
-      categoria: "Infantil"
-    },
-    { 
-      id: 3, 
-      titulo: "Técnicas avanzadas de slalom",
-      autor: "Profesor Experto",
-      fecha_publicacion: "2024-01-28",
-      categoria: "Avanzado"
-    }
-  ]);
+  const [articulos, setArticulos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ CORREGIDO: navegación a /informacion
+  // Cargar artículos desde el backend
+  useEffect(() => {
+    fetchArticulos();
+  }, []);
+
+  const fetchArticulos = async () => {
+    try {
+      const response = await api.get('/articulos');
+      setArticulos(response.data);
+    } catch (error) {
+      console.error('Error al cargar artículos:', error);
+      toast.error('Error al cargar artículos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleView = (id) => {
     navigate(`/informacion/${id}`);
   };
 
-  // ✅ CORREGIDO: navegación a /admin/informacion
   const handleEdit = (id) => {
     navigate(`/admin/informacion/detail/${id}`);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (confirm('¿Estás seguro de eliminar este artículo?')) {
-      setArticulos(articulos.filter(a => a.id !== id));
+      try {
+        await api.delete(`/articulos/${id}`);
+        setArticulos(articulos.filter(a => a.id !== id));
+        toast.success('Artículo eliminado');
+      } catch (error) {
+        console.error('Error al eliminar:', error);
+        toast.error('Error al eliminar el artículo');
+      }
     }
   };
 
-  // ✅ CORREGIDO: navegación a /admin/informacion/detail
   const handleAddNew = () => {
     navigate('/admin/informacion/detail');
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Breadcrumbs />
+        <AdminLayout activeTab="articulos">
+          <div className="flex justify-center items-center h-64">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </AdminLayout>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -69,43 +82,56 @@ const AdminInfoPage = () => {
         <div className="bg-light rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-bold text-dark mb-4">Lista de Artículos</h2>
 
-          <div className="space-y-3">
-            {articulos.map(articulo => (
-              <div key={articulo.id} className="flex justify-between items-center p-4 bg-secondary bg-opacity-20 rounded-lg">
-                <div>
-                  <h3 className="font-semibold text-dark text-lg">{articulo.titulo}</h3>
-                  <div className="flex gap-4 mt-1 text-sm text-gray-600">
-                    <span>Por: {articulo.autor}</span>
-                    <span>Categoría: {articulo.categoria}</span>
-                    <span>Publicado: {articulo.fecha_publicacion}</span>
+          {articulos.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No hay artículos creados</p>
+              <Button onClick={handleAddNew} variant="primary" className="mt-4">
+                Crear primer artículo
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {articulos.map(articulo => (
+                <div key={articulo.id} className="flex justify-between items-center p-4 bg-secondary bg-opacity-20 rounded-lg">
+                  <div>
+                    <h3 className="font-semibold text-dark text-lg">{articulo.titulo}</h3>
+                    <div className="flex gap-4 mt-1 text-sm text-gray-600 flex-wrap">
+                      <span>Por: {articulo.autor}</span>
+                      <span>Categoría: {articulo.categoria || 'General'}</span>
+                      <span>
+                        Publicado: {articulo.fecha_publicacion 
+                          ? new Date(articulo.fecha_publicacion).toLocaleDateString() 
+                          : 'Fecha no disponible'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => handleView(articulo.id)}
+                      className="p-2 text-primary hover:bg-primary hover:text-white rounded transition-colors"
+                      title="Ver"
+                    >
+                      <FaEye />
+                    </button>
+                    <button 
+                      onClick={() => handleEdit(articulo.id)}
+                      className="p-2 text-accent hover:bg-accent hover:text-white rounded transition-colors"
+                      title="Editar"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(articulo.id)}
+                      className="p-2 text-gray-600 hover:bg-red-500 hover:text-white rounded transition-colors"
+                      title="Eliminar"
+                    >
+                      <FaTrash />
+                    </button>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => handleView(articulo.id)}
-                    className="p-2 text-primary hover:bg-primary hover:text-white rounded transition-colors"
-                    title="Ver"
-                  >
-                    <FaEye />
-                  </button>
-                  <button 
-                    onClick={() => handleEdit(articulo.id)}
-                    className="p-2 text-accent hover:bg-accent hover:text-white rounded transition-colors"
-                    title="Editar"
-                  >
-                    <FaEdit />
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(articulo.id)}
-                    className="p-2 text-gray-600 hover:bg-red-500 hover:text-white rounded transition-colors"
-                    title="Eliminar"
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </AdminLayout>
     </div>

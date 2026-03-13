@@ -7,51 +7,82 @@ import BackButton from '../Atomic/Atoms/BackButton';
 import AdminLayout from '../Layouts/AdminLayout';
 import { toast } from 'react-hot-toast';
 import { FaEye } from 'react-icons/fa';
+import api from '../../services/api';
 
-const AdminArticleFormPage = () => {
+const AdminInfoFormPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = !!id;
+  const [loading, setLoading] = useState(isEditing);
 
-  // Estado del formulario
   const [formData, setFormData] = useState({
     titulo: '',
     subtitulo: '',
     autor: '',
-    url_imagen: '',
-    contenido: ''
+    imagen: '',
+    contenido: '',
+    categoria: ''
   });
 
   // Cargar datos si es edición
   useEffect(() => {
     if (isEditing) {
-      // Simular carga de datos
-      const mockData = {
-        id: 1,
-        titulo: "Cómo elegir tus primeros patines",
-        subtitulo: "Guía completa para principiantes",
-        autor: "Profesora Campeona",
-        url_imagen: "https://images.unsplash.com/photo-1563089145-599f8c5f5e3d?w=400",
-        contenido: "Contenido completo del artículo..."
+      const fetchArticle = async () => {
+        try {
+          const response = await api.get(`/articulos/${id}`);
+          setFormData(response.data);
+        } catch (error) {
+          console.error('Error al cargar artículo:', error);
+          toast.error('Error al cargar el artículo');
+          navigate('/admin/informacion');
+        } finally {
+          setLoading(false);
+        }
       };
-      setFormData(mockData);
+      fetchArticle();
     }
-  }, [isEditing, id]);
+  }, [isEditing, id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success(`Artículo ${isEditing ? 'actualizado' : 'creado'} exitosamente`);
-    navigate('/admin/articulos');
+    
+    try {
+      if (isEditing) {
+        await api.put(`/articulos/${id}`, formData);
+        toast.success('Artículo actualizado exitosamente');
+      } else {
+        await api.post('/articulos', formData);
+        toast.success('Artículo creado exitosamente');
+      }
+      navigate('/admin/informacion');
+    } catch (error) {
+      console.error('Error al guardar:', error);
+      toast.error('Error al guardar el artículo');
+    }
   };
 
   const handlePreview = () => {
     toast.success('Vista previa generada');
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Breadcrumbs />
+        <BackButton className="mb-4" />
+        <AdminLayout activeTab="articulos">
+          <div className="flex justify-center items-center h-64">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </AdminLayout>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -100,12 +131,23 @@ const AdminArticleFormPage = () => {
                   />
                 </div>
 
+                {/* Categoría */}
+                <div>
+                  <label className="block text-sm font-medium text-dark mb-2">Categoría</label>
+                  <Input
+                    name="categoria"
+                    value={formData.categoria}
+                    onChange={handleChange}
+                    placeholder="Ej: Principiantes, Avanzado, Salud..."
+                  />
+                </div>
+
                 {/* URL Imagen */}
                 <div>
                   <label className="block text-sm font-medium text-dark mb-2">URL Imagen</label>
                   <Input
-                    name="url_imagen"
-                    value={formData.url_imagen}
+                    name="imagen"
+                    value={formData.imagen}
                     onChange={handleChange}
                     placeholder="https://ejemplo.com/imagen.jpg"
                   />
@@ -133,11 +175,12 @@ const AdminArticleFormPage = () => {
               <h2 className="text-xl font-bold text-dark mb-4">Vista previa</h2>
               
               <div className="border rounded-lg p-4 mb-4">
-                {formData.url_imagen && (
+                {formData.imagen && (
                   <img 
-                    src={formData.url_imagen} 
+                    src={formData.imagen} 
                     alt="Preview"
                     className="w-full h-32 object-cover rounded mb-2"
+                    onError={(e) => e.target.src = 'https://via.placeholder.com/400x200?text=Sin+imagen'}
                   />
                 )}
                 <h3 className="font-semibold text-dark">{formData.titulo || 'Título del artículo'}</h3>
@@ -164,4 +207,4 @@ const AdminArticleFormPage = () => {
   );
 };
 
-export default AdminArticleFormPage;
+export default AdminInfoFormPage;

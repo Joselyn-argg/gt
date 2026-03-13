@@ -4,6 +4,7 @@ import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import Input from '../Atomic/Atoms/Input';
 import { toast } from 'react-hot-toast';
+import api from '../../services/api'; // 👈 Importar api
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -22,18 +23,46 @@ const LoginPage = () => {
     setLoginData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Simular login exitoso
-    toast.success('¡Bienvenido!');
-    navigate('/perfil');
+    
+    try {
+      // Llamada real al backend
+      const response = await api.post('/auth/login', {
+        email: loginData.username, // el backend espera "email"
+        password: loginData.password
+      });
+      
+      // Guardar token y datos del usuario
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      
+      // Redirigir según tipo de usuario
+      if (response.data.user.tipo_usuario === 'admin') {
+        toast.success('¡Bienvenido Administrador!');
+        navigate('/admin');
+      } else {
+        toast.success('¡Bienvenido!');
+        navigate('/perfil');
+      }
+      
+    } catch (error) {
+      console.error('Error login:', error);
+      toast.error('Credenciales inválidas');
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Simular registro
-    toast.success('Se ha enviado un enlace a tu correo electrónico para establecer tu contraseña');
-    setRegisterEmail('');
+    
+    try {
+      // Aquí iría la lógica de registro real
+      // Por ahora solo simulamos
+      toast.success('Se ha enviado un enlace a tu correo electrónico para establecer tu contraseña');
+      setRegisterEmail('');
+    } catch (error) {
+      toast.error('Error al registrar');
+    }
   };
 
   return (

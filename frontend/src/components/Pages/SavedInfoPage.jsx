@@ -1,36 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import { FaUserCircle, FaSignOutAlt, FaBookmark, FaTrash, FaEye } from 'react-icons/fa';
+import api from '../../services/api';
+import { toast } from 'react-hot-toast';
 
 const SavedInfoPage = () => {
   const navigate = useNavigate();
-  
-  // Datos simulados de artículos guardados
-  const [savedArticles, setSavedArticles] = useState([
-    {
-      id: 1,
-      titulo: "Cómo elegir tus primeros patines",
-      autor: "Profesora Campeona",
-      fecha_guardado: "2024-03-01"
-    },
-    {
-      id: 2,
-      titulo: "Beneficios del patinaje en niños",
-      autor: "Profesora Campeona",
-      fecha_guardado: "2024-02-28"
-    },
-    {
-      id: 3,
-      titulo: "Técnicas avanzadas de slalom",
-      autor: "Profesor Experto",
-      fecha_guardado: "2024-02-25"
-    }
-  ]);
+  const [savedArticles, setSavedArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({ nombre: 'Usuario', email: '' });
 
-  const handleRemove = (articleId) => {
+  useEffect(() => {
+    // Obtener usuario del localStorage
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+    fetchSavedArticles();
+  }, []);
+
+  const fetchSavedArticles = async () => {
+    try {
+      // Por ahora obtenemos todos los artículos y simulamos guardados
+      // En el futuro, esto debería ser un endpoint específico
+      const response = await api.get('/articulos');
+      // Simulamos que los primeros 2 están guardados
+      setSavedArticles(response.data.slice(0, 2));
+    } catch (error) {
+      console.error('Error al cargar artículos guardados:', error);
+      toast.error('Error al cargar artículos guardados');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemove = async (articleId) => {
+    // Aquí iría la lógica para quitar de guardados en el backend
     setSavedArticles(savedArticles.filter(a => a.id !== articleId));
+    toast.success('Artículo eliminado de guardados');
   };
 
   const handleViewArticle = (articleId) => {
@@ -38,8 +47,18 @@ const SavedInfoPage = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/');
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -53,8 +72,8 @@ const SavedInfoPage = () => {
           <div className="bg-light rounded-lg shadow-lg p-6">
             <div className="flex flex-col items-center mb-6">
               <FaUserCircle className="text-6xl text-primary mb-2" />
-              <p className="font-semibold text-dark">Joselyn Silva</p>
-              <p className="text-sm text-gray-600">joselyn@email.com</p>
+              <p className="font-semibold text-dark">{user.nombre || 'Usuario'}</p>
+              <p className="text-sm text-gray-600">{user.email || ''}</p>
             </div>
 
             <nav className="space-y-2">
@@ -79,11 +98,19 @@ const SavedInfoPage = () => {
           <div className="bg-light rounded-lg shadow-lg p-6">
             <div className="flex items-center gap-2 mb-4">
               <FaBookmark className="text-primary" />
-              <h2 className="text-xl font-bold text-dark">Informacion guardad</h2>
+              <h2 className="text-xl font-bold text-dark">Información guardada</h2>
             </div>
 
             {savedArticles.length === 0 ? (
-              <p className="text-gray-600 text-center py-8">No tienes artículos guardados</p>
+              <div className="text-center py-12">
+                <FaBookmark className="text-4xl text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 text-lg">No has guardado información</p>
+                <Link to="/informacion">
+                  <Button variant="primary" className="mt-4">
+                    Explorar artículos
+                  </Button>
+                </Link>
+              </div>
             ) : (
               <div className="space-y-3">
                 {savedArticles.map(article => (
@@ -93,7 +120,11 @@ const SavedInfoPage = () => {
                       onClick={() => handleViewArticle(article.id)}
                     >
                       <h3 className="font-semibold text-dark hover:text-primary">{article.titulo}</h3>
-                      <p className="text-sm text-gray-600">Por {article.autor} · Guardado el {article.fecha_guardado}</p>
+                      <p className="text-sm text-gray-600">
+                        Por {article.autor} · {article.fecha_publicacion 
+                          ? new Date(article.fecha_publicacion).toLocaleDateString() 
+                          : 'Fecha no disponible'}
+                      </p>
                     </div>
                     <div className="flex gap-2">
                       <button 
