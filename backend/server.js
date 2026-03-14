@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const db = require('./config/db');
-const bcrypt = require('bcryptjs'); // 👈 IMPORTANTE: agregar esta línea
+const bcrypt = require('bcryptjs');
 
 // Importar modelos
 const userModel = require('./models/userModel');
@@ -13,6 +13,7 @@ const articleModel = require('./models/articleModel');
 const authRoutes = require('./routes/authRoutes');
 const classRoutes = require('./routes/classRoutes');
 const articleRoutes = require('./routes/articleRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,10 +23,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas
+// Rutas - TODAS deben ir DESPUÉS de los middlewares
 app.use('/api/auth', authRoutes);
 app.use('/api/clases', classRoutes);
 app.use('/api/articulos', articleRoutes);
+app.use('/api/usuarios', userRoutes); // 👈 Aquí debe estar (no arriba)
 
 // Ruta de prueba
 app.get('/', (req, res) => {
@@ -34,7 +36,8 @@ app.get('/', (req, res) => {
     endpoints: {
       auth: '/api/auth',
       clases: '/api/clases',
-      articulos: '/api/articulos'
+      articulos: '/api/articulos',
+      usuarios: '/api/usuarios' // 👈 Agregado
     }
   });
 });
@@ -53,7 +56,7 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// Middleware 404
+// Middleware 404 (siempre al final)
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
@@ -114,7 +117,71 @@ app.listen(PORT, async () => {
     // Crear usuarios de ejemplo
     await createSampleUsers();
     
+    // Crear datos de ejemplo para clases y artículos
+    await createSampleData();
+    
   } catch (error) {
     console.error('Error al inicializar:', error);
   }
 });
+
+// Función para crear datos de ejemplo (clases y artículos)
+async function createSampleData() {
+  try {
+    // Verificar si hay clases
+    const clases = await classModel.getAll();
+    
+    if (clases.length === 0) {
+      await classModel.create({
+        nombre: "Iniciación al Slalom",
+        nivel: "iniciante",
+        duracion: 1.5,
+        precio: 15000,
+        cupos: 8,
+        descripcion: "Aprende las bases del slalom, la disciplina que combina técnica y velocidad.",
+        imagen: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?w=400",
+        categorias: ["slalom", "principiantes"]
+      });
+      
+      await classModel.create({
+        nombre: "Técnicas de Freno",
+        nivel: "intermedio",
+        duracion: 1,
+        precio: 12000,
+        cupos: 10,
+        descripcion: "Domina diferentes técnicas de frenado para patinar con total seguridad.",
+        imagen: "https://images.unsplash.com/photo-1563089145-599f8c5f5e3d?w=400",
+        categorias: ["técnicas", "seguridad"]
+      });
+      
+      console.log('✅ Clases de ejemplo creadas');
+    }
+
+    // Verificar si hay artículos
+    const articulos = await articleModel.getAll();
+    
+    if (articulos.length === 0) {
+      await articleModel.create({
+        titulo: "Cómo elegir tus primeros patines",
+        subtitulo: "Guía completa para principiantes",
+        autor: "Profesora Campeona",
+        contenido: "Elegir tus primeros patines puede ser abrumador...",
+        imagen: "https://contents.mediadecathlon.com/p2351530/k$7806eb9e9966765e62cfd2a1adf093e1/1200x0/1.91cr1/default.jpg?format=auto",
+        categoria: "Principiantes"
+      });
+      
+      await articleModel.create({
+        titulo: "Beneficios del patinaje en niños",
+        subtitulo: "Desarrollo físico y emocional",
+        autor: "Profesora Campeona",
+        contenido: "El patinaje es una actividad completa...",
+        imagen: "https://www.inercia.com/blog/wp-content/uploads/2012/02/patines-infantiles1.jpg",
+        categoria: "Infantil"
+      });
+      
+      console.log('✅ Artículos de ejemplo creados');
+    }
+  } catch (error) {
+    console.error('Error al crear datos de ejemplo:', error);
+  }
+}

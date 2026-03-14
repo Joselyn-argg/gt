@@ -26,7 +26,7 @@ const AdminProfilePage = () => {
   };
 
   const handleLogout = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   return (
@@ -50,7 +50,7 @@ const AdminProfilePage = () => {
                 Lista de Clases
               </Link>
               <Link to="/admin/informacion" className="block p-2 hover:bg-secondary hover:bg-opacity-50 rounded font-medium">
-                Lista de Información
+                Lista de Artículos
               </Link>
             </nav>
 

@@ -23,11 +23,9 @@ const SavedInfoPage = () => {
 
   const fetchSavedArticles = async () => {
     try {
-      // Por ahora obtenemos todos los artículos y simulamos guardados
-      // En el futuro, esto debería ser un endpoint específico
-      const response = await api.get('/articulos');
-      // Simulamos que los primeros 2 están guardados
-      setSavedArticles(response.data.slice(0, 2));
+      // Endpoint real para obtener artículos guardados del usuario
+      const response = await api.get('/usuarios/articulos-guardados');
+      setSavedArticles(response.data);
     } catch (error) {
       console.error('Error al cargar artículos guardados:', error);
       toast.error('Error al cargar artículos guardados');
@@ -37,9 +35,14 @@ const SavedInfoPage = () => {
   };
 
   const handleRemove = async (articleId) => {
-    // Aquí iría la lógica para quitar de guardados en el backend
-    setSavedArticles(savedArticles.filter(a => a.id !== articleId));
-    toast.success('Artículo eliminado de guardados');
+    try {
+      await api.delete(`/usuarios/articulos-guardados/${articleId}`);
+      setSavedArticles(savedArticles.filter(a => a.id !== articleId));
+      toast.success('Artículo eliminado de guardados');
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+      toast.error('Error al eliminar artículo');
+    }
   };
 
   const handleViewArticle = (articleId) => {

@@ -32,7 +32,7 @@ const AdminLayout = ({ children, activeTab }) => {
               Lista de Clases
             </Link>
             <Link 
-              to="/admin/articulos" 
+              to="/admin/informacion" 
               className={`block p-2 rounded font-medium ${
                 activeTab === 'articulos' 
                   ? 'bg-primary text-white' 

@@ -112,9 +112,6 @@ const InfoDetailPage = () => {
                 })
               : 'Fecha no disponible'}
           </span>
-          <span className="flex items-center gap-1">
-            <FaClock /> {article.tiempo_lectura || '5 min'} lectura
-          </span>
         </div>
 
         {/* Título */}
@@ -125,25 +122,6 @@ const InfoDetailPage = () => {
         <div className="prose prose-lg max-w-none">
           <p className="whitespace-pre-line">{article.contenido}</p>
         </div>
-
-        {/* Artículos relacionados (opcional) */}
-        {article.relacionados && article.relacionados.length > 0 && (
-          <div className="mt-12 pt-8 border-t">
-            <h3 className="text-2xl font-bold text-dark mb-6">Artículos relacionados</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {article.relacionados.map(rel => (
-                <div 
-                  key={rel.id} 
-                  className="p-4 bg-secondary bg-opacity-20 rounded-lg cursor-pointer hover:bg-opacity-30 transition"
-                  onClick={() => navigate(`/informacion/${rel.id}`)}
-                >
-                  <p className="font-semibold hover:text-primary">{rel.titulo}</p>
-                  <p className="text-sm text-gray-600">{rel.categoria}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </article>
     </div>
   );

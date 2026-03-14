@@ -25,7 +25,9 @@ const UserProfilePage = () => {
   };
 
   const handleLogout = () => {
-    navigate('/');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
   };
 
   return (

@@ -101,6 +101,38 @@ const authController = {
       console.error('Error en login:', error);
       res.status(500).json({ error: 'Error interno del servidor' });
     }
+  },
+
+  verifyToken: async (req, res) => {
+    try {
+      // El token ya fue verificado por el middleware
+      // Buscar usuario actualizado en la BD
+      const user = await userModel.findById(req.user.id);
+      
+      if (!user) {
+        return res.status(401).json({ 
+          valid: false,
+          error: 'Usuario no encontrado' 
+        });
+      }
+
+      res.json({
+        valid: true,
+        user: {
+          id: user.id,
+          nombre: user.nombre,
+          apellido: user.apellido,
+          email: user.email,
+          tipo_usuario: user.tipo_usuario
+        }
+      });
+    } catch (error) {
+      console.error('Error al verificar token:', error);
+      res.status(500).json({ 
+        valid: false,
+        error: 'Error al verificar token' 
+      });
+    }
   }
 };
 
