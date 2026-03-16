@@ -5,6 +5,7 @@ import Button from '../Atomic/Atoms/Button';
 import BackButton from '../Atomic/Atoms/BackButton';
 import { FaBookmark, FaRegBookmark, FaClock, FaUser, FaCalendar } from 'react-icons/fa';
 import api from '../../services/api';
+import { toast } from 'react-hot-toast';
 
 const InfoDetailPage = () => {
   const { id } = useParams();
@@ -13,6 +14,7 @@ const InfoDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
+  const [user, setUser] = useState(null);
 
   // Cargar artículo desde el backend
   useEffect(() => {
@@ -36,9 +38,48 @@ const InfoDetailPage = () => {
     fetchArticle();
   }, [id, navigate]);
 
-  const toggleSave = () => {
-    setIsSaved(!isSaved);
-    // Aquí podrías agregar lógica para guardar en el backend
+  // Cargar usuario y verificar artículo guardado
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token && article) {
+          const response = await api.get('/usuarios/articulos-guardados');
+          const savedIds = response.data.map(a => a.id);
+          setIsSaved(savedIds.includes(article.id));
+        }
+      } catch (error) {
+        console.error('Error al verificar artículo guardado:', error);
+      }
+    };
+    
+    if (article) {
+      checkIfSaved();
+    }
+  }, [article]);
+
+  const toggleSave = async () => {
+    try {
+      if (isSaved) {
+        await api.delete(`/usuarios/articulos-guardados/${article.id}`);
+        setIsSaved(false);
+        toast.success('Artículo eliminado de guardados');
+      } else {
+        await api.post('/usuarios/articulos-guardados', { articleId: article.id });
+        setIsSaved(true);
+        toast.success('Artículo guardado');
+      }
+    } catch (error) {
+      console.error('Error al guardar:', error);
+      toast.error('Error al guardar artículo');
+    }
   };
 
   if (loading) {
@@ -68,7 +109,6 @@ const InfoDetailPage = () => {
       <Breadcrumbs />
       <BackButton className="mb-4" />
 
-      {/* Imagen destacada */}
       <div className="relative h-96 rounded-lg overflow-hidden mb-8">
         <img 
           src={article.imagen || article.url_imagen || 'https://via.placeholder.com/1200x400?text=Artículo'} 
@@ -78,18 +118,21 @@ const InfoDetailPage = () => {
             e.target.src = 'https://via.placeholder.com/1200x400?text=Imagen+no+disponible';
           }}
         />
-        <div className="absolute top-4 right-4">
-          <button
-            onClick={toggleSave}
-            className="p-3 bg-white rounded-full shadow-lg hover:bg-accent transition-colors"
-          >
-            {isSaved ? (
-              <FaBookmark className="text-accent text-xl" />
-            ) : (
-              <FaRegBookmark className="text-gray-700 text-xl" />
-            )}
-          </button>
-        </div>
+        {/* Botón de guardar solo para no-admin */}
+        {user?.tipo_usuario !== 'admin' && (
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={toggleSave}
+              className="p-3 bg-white rounded-full shadow-lg hover:bg-accent transition-colors"
+            >
+              {isSaved ? (
+                <FaBookmark className="text-accent text-xl" />
+              ) : (
+                <FaRegBookmark className="text-gray-700 text-xl" />
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Contenido del artículo */}
@@ -118,7 +161,7 @@ const InfoDetailPage = () => {
         <h1 className="text-4xl font-bold text-dark mb-2">{article.titulo}</h1>
         <h2 className="text-xl text-gray-600 mb-8">{article.subtitulo}</h2>
 
-        {/* Contenido - ahora como texto plano, no HTML */}
+        {/* Contenido - como texto plano */}
         <div className="prose prose-lg max-w-none">
           <p className="whitespace-pre-line">{article.contenido}</p>
         </div>

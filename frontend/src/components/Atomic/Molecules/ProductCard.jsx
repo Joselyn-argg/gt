@@ -22,7 +22,7 @@ const ProductCard = ({ item, type }) => { // type puede ser 'class' o 'article'
           <p className="text-gray-600 mb-1">Duración: {item.duracion} hrs</p>
           <p className="text-accent font-bold text-lg mb-3">${item.precio?.toLocaleString()}</p>
           <Button onClick={handleAddToCart} variant="accent" className="w-full">
-            Añadir al carrito
+            Ver detalles
           </Button>
         </>
       )}
