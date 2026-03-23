@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import Input from '../Atomic/Atoms/Input';
@@ -8,6 +9,7 @@ import api from '../../services/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login, isAuthenticated, isAdmin, isLoading } = useAuth();
   
   // Verificar si ya hay sesión activa al cargar la página
   useEffect(() => {
@@ -31,6 +33,18 @@ const LoginPage = () => {
 
   const [registerEmail, setRegisterEmail] = useState('');
 
+  // 🔐 Si ya está autenticado, redirigir automáticamente
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      console.log('✅ LoginPage: Usuario ya autenticado, redirigiendo...');
+      if (isAdmin) {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/perfil', { replace: true });
+      }
+    }
+  }, [isAuthenticated, isAdmin, isLoading, navigate]);
+
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setLoginData(prev => ({ ...prev, [name]: value }));
@@ -45,9 +59,8 @@ const LoginPage = () => {
         password: loginData.password
       });
       
-      // Guardar token y datos del usuario
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      // Usar AuthContext para guardar token y user
+      login(response.data.token, response.data.user);
       
       toast.success('¡Sesión iniciada correctamente!');
       
@@ -75,6 +88,15 @@ const LoginPage = () => {
       toast.error('Error al registrar');
     }
   };
+
+  // Mostrar loader mientras se verifica la autenticación
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div>

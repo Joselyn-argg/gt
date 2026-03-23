@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
        colors: {
-        'primary': '#c9c9f7',        // Lavanda muy suave
+        'primary': '#aeb0eb',        // Lavanda muy suave
         'secondary': '#D8D0F0',       // Lavanda pálido
         'accent': '#9B8BC2',          // Lavanda medio
         'accent2': '#C2B3E6',         // Lavanda claro

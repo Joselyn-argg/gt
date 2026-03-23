@@ -4,14 +4,6 @@ import { useCart } from '../../../context/CartContext';
 const ProductCard = ({ item, type }) => { // type puede ser 'class' o 'article'
   const { addToCart } = useCart(); // Obtenemos la función para agregar al carrito
 
-  // Función para manejar el clic en "Añadir al carrito"
-  const handleAddToCart = () => {
-    if (type === 'class') {
-      addToCart(item); // Llamada a la función del contexto
-      // La alerta "Item añadido al carrito" se manejadesde el contexto
-    }
-  };
-
   return (
     <div className="border rounded-lg shadow-md p-4 bg-light hover:shadow-lg transition-shadow">
       <img src={item.imagen || '/placeholder-image.jpg'} alt={item.nombre || item.titulo} className="w-full h-48 object-cover rounded-t-lg mb-3" />
@@ -21,8 +13,8 @@ const ProductCard = ({ item, type }) => { // type puede ser 'class' o 'article'
           <p className="text-gray-600 mb-1">Nivel: {item.nivel}</p>
           <p className="text-gray-600 mb-1">Duración: {item.duracion} hrs</p>
           <p className="text-accent font-bold text-lg mb-3">${item.precio?.toLocaleString()}</p>
-          <Button onClick={handleAddToCart} variant="accent" className="w-full">
-            Ver detalles
+          <Button variant="accent" className="w-full">
+            Ver Detalles
           </Button>
         </>
       )}

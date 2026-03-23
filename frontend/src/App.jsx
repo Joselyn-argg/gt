@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/Layouts/MainLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './components/Pages/HomePage';
 import ClassesPage from './components/Pages/ClassesPage';
 import ClassDetailPage from './components/Pages/ClassDetailPage';
@@ -36,53 +37,53 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/recuperar-password" element={<ForgotPasswordPage />} />
           
-          {/* Rutas protegidas - Usuario normal */}
+          {/* Perfil de usuario - Protegido */}
           <Route path="/perfil" element={
-            <PrivateRoute>
+            <ProtectedRoute>
               <UserProfilePage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/perfil/guardados" element={
-            <PrivateRoute>
+            <ProtectedRoute>
               <SavedInfoPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           
-          {/* Rutas protegidas - Administrador */}
+          {/* Perfil administrador - Solo admins */}
           <Route path="/admin" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminProfilePage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/clases" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminClassesPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/clases/detail" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminClassFormPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/clases/detail/:id" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminClassFormPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/informacion" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminInfoPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/informacion/detail" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminInfoFormPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           <Route path="/admin/informacion/detail/:id" element={
-            <PrivateRoute adminOnly={true}>
+            <ProtectedRoute requiredRole="admin">
               <AdminInfoFormPage />
-            </PrivateRoute>
+            </ProtectedRoute>
           } />
           
           {/* Ruta 404 */}

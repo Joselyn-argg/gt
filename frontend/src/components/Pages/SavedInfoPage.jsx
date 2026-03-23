@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import { FaUserCircle, FaSignOutAlt, FaBookmark, FaTrash, FaEye } from 'react-icons/fa';
@@ -8,18 +9,19 @@ import { toast } from 'react-hot-toast';
 
 const SavedInfoPage = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [savedArticles, setSavedArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({ nombre: 'Usuario', email: '' });
+  const [userState, setUserState] = useState({ nombre: 'Usuario', email: '' });
 
   useEffect(() => {
-    // Obtener usuario del localStorage
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
+    // Usar el user del AuthContext
+    if (user) {
+      console.log('👤 SavedInfoPage: User desde AuthContext:', user);
+      setUserState(user);
     }
     fetchSavedArticles();
-  }, []);
+  }, [user]);
 
   const fetchSavedArticles = async () => {
     try {
@@ -50,9 +52,9 @@ const SavedInfoPage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
+    console.log('🚪 SavedInfoPage: Ejecutando logout');
+    logout();
+    navigate('/login');
   };
 
   if (loading) {
@@ -75,8 +77,8 @@ const SavedInfoPage = () => {
           <div className="bg-light rounded-lg shadow-lg p-6">
             <div className="flex flex-col items-center mb-6">
               <FaUserCircle className="text-6xl text-primary mb-2" />
-              <p className="font-semibold text-dark">{user.nombre || 'Usuario'}</p>
-              <p className="text-sm text-gray-600">{user.email || ''}</p>
+              <p className="font-semibold text-dark">{userState.nombre || 'Usuario'}</p>
+              <p className="text-sm text-gray-600">{userState.email || ''}</p>
             </div>
 
             <nav className="space-y-2">

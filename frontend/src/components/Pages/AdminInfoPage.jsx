@@ -58,7 +58,7 @@ const AdminInfoPage = () => {
     return (
       <div>
         <Breadcrumbs />
-        <AdminLayout activeTab="articulos">
+        <AdminLayout activeTab="informacion">
           <div className="flex justify-center items-center h-64">
             <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
@@ -71,7 +71,7 @@ const AdminInfoPage = () => {
     <div>
       <Breadcrumbs />
       
-      <AdminLayout activeTab="articulos">
+      <AdminLayout activeTab="informacion">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-dark">Administrar Información</h1>
           <Button onClick={handleAddNew} variant="primary" className="flex items-center gap-2">

@@ -1,11 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import Button from '../Atomic/Atoms/Button';
 
 const AdminLayout = ({ children, activeTab }) => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
+    console.log('🚪 AdminLayout: Ejecutando logout');
+    logout();
     navigate('/');
   };
 
@@ -17,7 +21,7 @@ const AdminLayout = ({ children, activeTab }) => {
           <Link to="/admin" className="flex flex-col items-center mb-6 group">
             <FaUserCircle className="text-6xl text-primary mb-2 group-hover:text-accent transition-colors" />
             <p className="font-semibold text-dark group-hover:text-primary transition-colors">Admin Principal</p>
-            <p className="text-sm text-gray-600">admin@escuela.cl</p>
+            <p className="text-sm text-gray-600">{user?.email || 'admin@escuela.cl'}</p>
           </Link>
 
           <nav className="space-y-2">
@@ -34,7 +38,7 @@ const AdminLayout = ({ children, activeTab }) => {
             <Link 
               to="/admin/informacion" 
               className={`block p-2 rounded font-medium ${
-                activeTab === 'articulos' 
+                activeTab === 'informacion' 
                   ? 'bg-primary text-white' 
                   : 'hover:bg-secondary hover:bg-opacity-50'
               }`}

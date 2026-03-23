@@ -9,19 +9,17 @@ const api = axios.create({
   },
 });
 
-// Interceptor para AGREGAR token en CADA petición
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+// Interceptor para agregar token automáticamente
+api.interceptors.request.use((config) => {
+  // Leer el token del localStorage directamente en cada request
+  // (Se sincroniza automáticamente con AuthContext)
+  const token = localStorage.getItem('token');
+  if (token) {
+    console.log('🔑 Axios: Agregando token en header Authorization');
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 // Interceptor para manejar token expirado
 api.interceptors.response.use(
@@ -35,6 +33,21 @@ api.interceptors.response.use(
       if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login';
       }
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Interceptor para manejar errores de autenticación
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.log('❌ Axios: Token inválido o expirado');
+      // Opcional: Limpiar localStorage y redirigir a login
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

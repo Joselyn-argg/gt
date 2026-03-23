@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import Input from '../Atomic/Atoms/Input';
@@ -7,6 +8,7 @@ import { FaUserCircle, FaSignOutAlt, FaBookmark } from 'react-icons/fa';
 
 const UserProfilePage = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [userData, setUserData] = useState({
     nombre: 'Joselyn',
     apellido: 'Silva',
@@ -25,8 +27,8 @@ const UserProfilePage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    console.log('🚪 UserProfilePage: Ejecutando logout');
+    logout();
     navigate('/login');
   };
 
