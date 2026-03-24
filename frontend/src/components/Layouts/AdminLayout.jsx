@@ -33,7 +33,7 @@ const AdminLayout = ({ children, activeTab }) => {
                   : 'hover:bg-secondary hover:bg-opacity-50'
               }`}
             >
-              Lista de Clases
+              Administrar clases
             </Link>
             <Link 
               to="/admin/informacion" 
@@ -43,7 +43,7 @@ const AdminLayout = ({ children, activeTab }) => {
                   : 'hover:bg-secondary hover:bg-opacity-50'
               }`}
             >
-              Lista de Artículos
+              Administrar información
             </Link>
           </nav>
 
