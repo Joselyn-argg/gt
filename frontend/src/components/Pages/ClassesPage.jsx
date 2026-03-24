@@ -8,6 +8,7 @@ const ClassesPage = () => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -25,6 +26,16 @@ const ClassesPage = () => {
 
     fetchClasses();
   }, []);
+
+  const categories = ['Todos', ...new Set(
+    classes.flatMap(cls => cls.categorias || [])
+  )];
+
+  const filteredClasses = selectedCategory === 'Todos' 
+    ? classes 
+    : classes.filter(cls => 
+        cls.categorias && cls.categorias.includes(selectedCategory)
+      );
 
   if (loading) {
     return (
@@ -55,13 +66,34 @@ const ClassesPage = () => {
     <div>
       <Breadcrumbs />
       
-      <h1 className="text-3xl font-bold text-dark mb-6">Nuestras Clases</h1>
+      <div className="bg-accent rounded-lg p-8 mb-8 text-white">
+        <h1 className="text-4xl font-bold mb-2">Nuestras Clases</h1>
+        <p className="text-xl opacity-90">Encuentra la clase perfecta para aprender y mejorar tu técnica</p>
+      </div>
+
+      {classes.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-8">
+          {categories.map(category => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full font-medium transition-all ${
+                selectedCategory === category
+                  ? 'bg-primary text-white shadow-md hover:bg-accent3'
+                  : 'bg-secondary text-dark hover:bg-accent2 hover:text-white'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      )}
       
-      {classes.length === 0 ? (
-        <p className="text-center text-gray-600">No hay clases disponibles</p>
+      {filteredClasses.length === 0 ? (
+        <p className="text-center text-gray-600">No hay clases disponibles para esta categoría</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {classes.map(cls => (
+          {filteredClasses.map(cls => (
             <Link key={cls.id} to={`/clases/${cls.id}`}>
               <ProductCard item={cls} type="class" />
             </Link>

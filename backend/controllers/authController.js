@@ -105,8 +105,6 @@ const authController = {
 
   verifyToken: async (req, res) => {
     try {
-      // El token ya fue verificado por el middleware
-      // Buscar usuario actualizado en la BD
       const user = await userModel.findById(req.user.id);
       
       if (!user) {

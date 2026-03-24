@@ -1,12 +1,3 @@
--- =============================================
--- DDL (Data Definition Language)
--- Definición de la estructura de la base de datos
--- =============================================
-
--- =============================================
--- TABLA: usuarios
--- Descripción: Almacena la información de los usuarios registrados
--- =============================================
 CREATE TABLE IF NOT EXISTS usuarios (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
@@ -16,11 +7,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
   tipo_usuario VARCHAR(20) DEFAULT 'usuario',
   fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- =============================================
--- TABLA: clases
--- Descripción: Almacena información de las clases de patinaje disponibles
--- =============================================
 CREATE TABLE IF NOT EXISTS clases (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
@@ -34,10 +20,6 @@ CREATE TABLE IF NOT EXISTS clases (
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- =============================================
--- TABLA: articulos
--- Descripción: Almacena artículos informativos y educativos
--- =============================================
 CREATE TABLE IF NOT EXISTS articulos (
   id SERIAL PRIMARY KEY,
   titulo VARCHAR(200) NOT NULL,
@@ -49,10 +31,6 @@ CREATE TABLE IF NOT EXISTS articulos (
   fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- =============================================
--- TABLA: usuarios_articulos
--- Descripción: Relación muchos-a-muchos entre usuarios y artículos guardados
--- =============================================
 CREATE TABLE IF NOT EXISTS usuarios_articulos (
   id SERIAL PRIMARY KEY,
   usuario_id INTEGER NOT NULL,
@@ -63,10 +41,6 @@ CREATE TABLE IF NOT EXISTS usuarios_articulos (
   UNIQUE(usuario_id, articulo_id)
 );
 
--- =============================================
--- ÍNDICES
--- Mejora el rendimiento de consultas frecuentes
--- =============================================
 CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
 CREATE INDEX IF NOT EXISTS idx_clases_nivel ON clases(nivel);
 CREATE INDEX IF NOT EXISTS idx_articulos_categoria ON articulos(categoria);

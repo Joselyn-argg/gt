@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/clases', classRoutes);
 app.use('/api/articulos', articleRoutes);
-app.use('/api/usuarios', userRoutes); // 👈 Aquí debe estar (no arriba)
+app.use('/api/usuarios', userRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
