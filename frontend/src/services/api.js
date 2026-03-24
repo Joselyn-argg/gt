@@ -26,28 +26,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token inválido o expirado
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      // Solo redirigir si no estamos ya en login
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-// Interceptor para manejar errores de autenticación
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
       console.log('❌ Axios: Token inválido o expirado');
-      // Opcional: Limpiar localStorage y redirigir a login
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Dejar que el componente maneje el error (no redirigir aquí)
     }
     return Promise.reject(error);
   }

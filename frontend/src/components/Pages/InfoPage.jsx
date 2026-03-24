@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import Button from '../Atomic/Atoms/Button';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import api from '../../services/api';
 import { toast } from 'react-hot-toast';
 
 const InfoPage = () => {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -70,6 +71,11 @@ const InfoPage = () => {
       // Verificar si el error es por falta de autenticación
       if (error.response?.status === 401) {
         toast.error('Debes Registrarte o Iniciar sesión para guardar información');
+        
+        // Redirigir a login después de 2.5 segundos
+        setTimeout(() => {
+          navigate('/login');
+        }, 2500);
       } else {
         toast.error('Error al guardar artículo');
       }
