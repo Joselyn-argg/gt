@@ -66,7 +66,13 @@ const InfoPage = () => {
       }
     } catch (error) {
       console.error('Error al guardar:', error);
-      toast.error('Error al guardar artículo');
+      
+      // Verificar si el error es por falta de autenticación
+      if (error.response?.status === 401) {
+        toast.error('Debes Registrarte o Iniciar sesión para guardar información');
+      } else {
+        toast.error('Error al guardar artículo');
+      }
     }
   };
 

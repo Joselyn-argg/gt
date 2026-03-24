@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const userModel = require('./models/userModel');
 const classModel = require('./models/classModel');
 const articleModel = require('./models/articleModel');
+const userArticlesModel = require('./models/userArticlesModel');
 
 // Importar rutas
 const authRoutes = require('./routes/authRoutes');
@@ -37,7 +38,7 @@ app.get('/', (req, res) => {
       auth: '/api/auth',
       clases: '/api/clases',
       articulos: '/api/articulos',
-      usuarios: '/api/usuarios' // 👈 Agregado
+      usuarios: '/api/usuarios' 
     }
   });
 });
@@ -112,6 +113,7 @@ app.listen(PORT, async () => {
     await userModel.createTable();
     await classModel.createTable();
     await articleModel.createTable();
+    await userArticlesModel.createTable();
     console.log('✅ Tablas creadas/verificadas');
     
     // Crear usuarios de ejemplo
