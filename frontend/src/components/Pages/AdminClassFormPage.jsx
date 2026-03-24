@@ -8,6 +8,7 @@ import AdminLayout from '../Layouts/AdminLayout';
 import { toast } from 'react-hot-toast';
 import { FaEye } from 'react-icons/fa';
 import api from '../../services/api';
+import { NIVELES, CATEGORIAS_CLASES } from '../../constants/classConstants';
 
 const AdminClassFormPage = () => {
   const { id } = useParams();
@@ -26,8 +27,8 @@ const AdminClassFormPage = () => {
     imagen: ''
   });
 
-  const niveles = ['iniciante', 'intermedio', 'avanzado'];
-  const categoriasOptions = ['slalom', 'artístico', 'velocidad', 'principiantes', 'técnicas'];
+  const niveles = NIVELES;
+  const categoriasOptions = CATEGORIAS_CLASES;
 
   // Cargar datos si es edición
   useEffect(() => {

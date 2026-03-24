@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../Atomic/Molecules/ProductCard';
 import Breadcrumbs from '../Atomic/Molecules/Breadcrumbs';
 import api from '../../services/api';
+import { CATEGORIAS_CLASES } from '../../constants/classConstants';
 
 const ClassesPage = () => {
   const [classes, setClasses] = useState([]);
@@ -27,9 +28,7 @@ const ClassesPage = () => {
     fetchClasses();
   }, []);
 
-  const categories = ['Todos', ...new Set(
-    classes.flatMap(cls => cls.categorias || [])
-  )];
+  const categories = ['Todos', ...CATEGORIAS_CLASES];
 
   const filteredClasses = selectedCategory === 'Todos' 
     ? classes 
