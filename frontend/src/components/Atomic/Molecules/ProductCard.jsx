@@ -4,9 +4,13 @@ import { useCart } from '../../../context/CartContext';
 const ProductCard = ({ item, type }) => { // type puede ser 'class' o 'article'
   const { addToCart } = useCart(); // Obtenemos la función para agregar al carrito
 
+  const handleImageError = (e) => {
+    e.target.src = 'https://via.placeholder.com/400x300?text=Error+Imagen';
+  };
+
   return (
     <div className="border rounded-lg shadow-md p-4 bg-light hover:shadow-lg transition-shadow">
-      <img src={item.imagen || '/placeholder-image.jpg'} alt={item.nombre || item.titulo} className="w-full h-48 object-cover rounded-t-lg mb-3" />
+      <img src={item.imagen || 'https://via.placeholder.com/400x300?text=Sin+Imagen'} alt={item.nombre || item.titulo} className="w-full h-48 object-cover rounded-t-lg mb-3" onError={handleImageError} />
       <h3 className="text-xl font-semibold text-dark mb-2">{item.nombre || item.titulo}</h3>
       {type === 'class' && (
         <>

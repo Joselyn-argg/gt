@@ -37,6 +37,10 @@ const ClassDetailPage = () => {
     fetchClass();
   }, [id, navigate]);
 
+  const handleImageError = (e) => {
+    e.target.src = 'https://via.placeholder.com/800x400?text=Error+Imagen';
+  };
+
   const handleAddToCart = () => {
     if (classData) {
       for (let i = 0; i < quantity; i++) {
@@ -70,9 +74,10 @@ const ClassDetailPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <img 
-            src={classData.imagen || 'https://via.placeholder.com/800x400'} 
+            src={classData.imagen || 'https://via.placeholder.com/800x400?text=Sin+Imagen'} 
             alt={classData.nombre}
             className="w-full h-96 object-cover rounded-lg shadow-lg mb-6"
+            onError={handleImageError}
           />
           
           <h1 className="text-3xl font-bold text-dark mb-2">{classData.nombre}</h1>
