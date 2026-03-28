@@ -18,7 +18,6 @@ const userModel = {
     `;
     try {
       await pool.query(query);
-      console.log('✅ Tabla "usuarios" creada/verificada');
     } catch (error) {
       console.error('Error al crear tabla usuarios:', error);
     }

@@ -27,7 +27,6 @@ const UserProfilePage = () => {
   };
 
   const handleLogout = () => {
-    console.log('🚪 UserProfilePage: Ejecutando logout');
     logout();
     navigate('/login');
   };

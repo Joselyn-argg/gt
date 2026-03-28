@@ -1,18 +1,8 @@
--- =============================================
--- DML (Data Manipulation Language)
--- Datos de prueba y población inicial de tablas
--- =============================================
 
--- =============================================
--- INSERTAR USUARIOS DE EJEMPLO
--- =============================================
 INSERT INTO usuarios (nombre, apellido, email, password, tipo_usuario) VALUES
-('Admin', 'Principal', 'admin@escuela.cl', '$2a$10$encrypted_password_here', 'admin'),
-('Usuario', 'Normal', 'usuario@ejemplo.cl', '$2a$10$encrypted_password_here', 'usuario');
+('Admin', 'Principal', 'admin@escuela.cl', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36P4QaFm', 'admin'),
+('Usuario', 'Normal', 'usuario@ejemplo.cl', '$2a$10$WDfXcL0HfNFR8/KZrU5/Z.2M6.3.uU3GN7K3V7X7L9Y7Z7A7B7C7D', 'usuario');
 
--- ============================================
--- INSERTAR CLASES DE PATINAJE
--- ============================================
 INSERT INTO clases (nombre, nivel, duracion, precio, cupos, descripcion, imagen, categorias) VALUES
 ('Patinaje Básico Infantil', 'Principiante', 1.5, 15000, 10, 
  'Clase perfecta para niños que inician en el patinaje. Aprenderán equilibrio, pasos básicos y seguridad.', 
@@ -38,9 +28,6 @@ INSERT INTO clases (nombre, nivel, duracion, precio, cupos, descripcion, imagen,
  'Clase relajada para adultos que quieren aprender o recordar cómo patinar.',
  '/images/clase-adultos.jpg', '{Adultos,Recreativo}');
 
--- ============================================
--- INSERTAR ARTÍCULOS INFORMATIVOS
--- ============================================
 INSERT INTO articulos (titulo, subtitulo, autor, contenido, imagen, categoria) VALUES
 ('Cómo elegir los mejores patines', 'Guía completa para principiantes', 'Coach Juan Pérez',
  'Al elegir patines es importante considerar el tamaño, comodidad y tipo de patinaje que realizarás. Los patines deben ajustarse bien sin dejar puntos de presión. Es recomendable probar varios modelos antes de hacer una compra final. Consulta con expertos en tiendas especializadas para obtener mejores recomendaciones.',
@@ -66,12 +53,3 @@ INSERT INTO articulos (titulo, subtitulo, autor, contenido, imagen, categoria) V
  'Los patinadores competitivos necesitan una nutrición balanceada. Es importante consumir carbohidratos complejos, proteínas y mantenerse hidratado constantemente. Una buena alimentación mejora tu rendimiento y acelera la recuperación muscular después del entrenamiento.',
  '/images/articulo-nutricion.jpg', 'Salud');
 
--- =============================================
--- NOTAS IMPORTANTES
--- =============================================
--- NOTA 1: Las contraseñas en la tabla de ejemplo están marcadas como placeholder
---         En producción deben ser hashes seguros (bcrypt)
--- NOTA 2: Los artículos están optimizados para búsquedas por categoría
--- NOTA 3: Las clases tienen cupos limitados para control de inscripciones
--- NOTA 4: La tabla usuarios_articulos permanece vacía inicialmente y se 
---         poblará cuando los usuarios guarden artículos

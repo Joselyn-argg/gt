@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
 
   // Inicializar desde localStorage al montar
   useEffect(() => {
-    console.log('🔍 AuthContext: Inicializando desde localStorage');
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
     
@@ -35,10 +34,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!isLoading) {
       if (token) {
-        console.log('💾 Guardando token en localStorage');
         localStorage.setItem('token', token);
       } else {
-        console.log('🗑️ Eliminando token de localStorage');
         localStorage.removeItem('token');
       }
     }
@@ -47,23 +44,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!isLoading) {
       if (user) {
-        console.log('💾 Guardando user en localStorage');
         localStorage.setItem('user', JSON.stringify(user));
       } else {
-        console.log('🗑️ Eliminando user de localStorage');
         localStorage.removeItem('user');
       }
     }
   }, [user, isLoading]);
 
   const login = (token, userData) => {
-    console.log('🔐 AuthContext: Login ejecutado');
     setToken(token);
     setUser(userData);
   };
 
   const logout = () => {
-    console.log('🚪 AuthContext: Logout ejecutado');
     setToken(null);
     setUser(null);
   };

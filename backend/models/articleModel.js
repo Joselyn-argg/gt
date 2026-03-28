@@ -17,7 +17,6 @@ const articleModel = {
     `;
     try {
       await pool.query(query);
-      console.log('✅ Tabla "articulos" creada/verificada');
     } catch (error) {
       console.error('Error al crear tabla articulos:', error);
     }

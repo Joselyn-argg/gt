@@ -19,7 +19,6 @@ const classModel = {
     `;
     try {
       await pool.query(query);
-      console.log('✅ Tabla "clases" creada/verificada');
     } catch (error) {
       console.error('Error al crear tabla clases:', error);
     }

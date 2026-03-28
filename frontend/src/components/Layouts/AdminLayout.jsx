@@ -8,7 +8,6 @@ const AdminLayout = ({ children, activeTab }) => {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    console.log('🚪 AdminLayout: Ejecutando logout');
     logout();
     navigate('/');
   };

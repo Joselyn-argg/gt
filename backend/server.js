@@ -81,7 +81,6 @@ async function createSampleUsers() {
          VALUES ($1, $2, $3, $4, $5)`,
         ['Admin', 'Principal', 'admin@escuela.cl', hashedPassword, 'admin']
       );
-      console.log('✅ Usuario ADMIN creado: admin@escuela.cl / admin123');
     }
 
     // Crear usuario NORMAL si no existe
@@ -96,7 +95,6 @@ async function createSampleUsers() {
          VALUES ($1, $2, $3, $4, $5)`,
         ['Usuario', 'Normal', 'usuario@ejemplo.cl', hashedPassword, 'usuario']
       );
-      console.log('✅ Usuario NORMAL creado: usuario@ejemplo.cl / usuario123');
     }
 
   } catch (error) {
@@ -106,7 +104,6 @@ async function createSampleUsers() {
 
 // Iniciar servidor y crear tablas
 app.listen(PORT, async () => {
-  console.log(`🚀 Servidor en http://localhost:${PORT}`);
   
   try {
     // Crear tablas si no existen
@@ -114,7 +111,6 @@ app.listen(PORT, async () => {
     await classModel.createTable();
     await articleModel.createTable();
     await userArticlesModel.createTable();
-    console.log('✅ Tablas creadas/verificadas');
     
     // Crear usuarios de ejemplo
     await createSampleUsers();
@@ -156,7 +152,6 @@ async function createSampleData() {
         categorias: ["técnicas", "seguridad"]
       });
       
-      console.log('✅ Clases de ejemplo creadas');
     }
 
     // Verificar si hay artículos
@@ -181,7 +176,6 @@ async function createSampleData() {
         categoria: "Infantil"
       });
       
-      console.log('✅ Artículos de ejemplo creados');
     }
   } catch (error) {
     console.error('Error al crear datos de ejemplo:', error);

@@ -36,7 +36,6 @@ const LoginPage = () => {
   // 🔐 Si ya está autenticado, redirigir automáticamente
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      console.log('✅ LoginPage: Usuario ya autenticado, redirigiendo...');
       if (isAdmin) {
         navigate('/admin', { replace: true });
       } else {

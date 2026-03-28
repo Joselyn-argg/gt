@@ -17,7 +17,6 @@ const SavedInfoPage = () => {
   useEffect(() => {
     // Usar el user del AuthContext
     if (user) {
-      console.log('👤 SavedInfoPage: User desde AuthContext:', user);
       setUserState(user);
     }
     fetchSavedArticles();
@@ -52,7 +51,6 @@ const SavedInfoPage = () => {
   };
 
   const handleLogout = () => {
-    console.log('🚪 SavedInfoPage: Ejecutando logout');
     logout();
     navigate('/login');
   };
